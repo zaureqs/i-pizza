@@ -26,20 +26,26 @@ export async function POST(req) {
   const buffer = Buffer.concat(chunks);
 
   const bucket = process.env.AWS_BUCKET;
-  s3Client.send(
-    new PutObjectCommand({
-      Bucket: bucket,
-      Key: "menu-items/" + newFileName,
-      ACL: "public-read",
-      ContentType: file.type,
-      Body: buffer,
-    })
-  );
+  try {
+    const ress = await s3Client.send(
+      new PutObjectCommand({
+        Bucket: bucket,
+        Key: "menu-items/" + newFileName,
+        ACL: "public-read",
+        ContentType: file.type,
+        Body: buffer,
+      })
+    );
 
-  const link = `https://${bucket}.s3.amazonaws.com/menu-items/${newFileName}`;
+    console.log(ress);
 
-  return Response.json({
-    success: true,
-    link,
-  });
+    const link = `https://${bucket}.s3.amazonaws.com/menu-items/${newFileName}`;
+
+    return Response.json({
+      success: true,
+      link,
+    });
+  } catch (error) {
+    return Response.json({ error });
+  }
 }
