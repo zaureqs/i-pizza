@@ -20,7 +20,6 @@ const [categories, setCategories] = useState([]);
     fetch('/api/categories').then(res => {
       res.json().then(data => {
         setCategories(data.categories);
-        console.log(data.categories);
       })
     })
   }, [])

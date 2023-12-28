@@ -27,7 +27,7 @@ export async function POST(req) {
 
   const bucket = process.env.AWS_BUCKET;
   try {
-    const ress = await s3Client.send(
+    const awsResponce = await s3Client.send(
       new PutObjectCommand({
         Bucket: bucket,
         Key: "menu-items/" + newFileName,
@@ -37,8 +37,6 @@ export async function POST(req) {
       })
     );
 
-    console.log(ress);
-
     const link = `https://${bucket}.s3.amazonaws.com/menu-items/${newFileName}`;
 
     return Response.json({
@@ -46,6 +44,9 @@ export async function POST(req) {
       link,
     });
   } catch (error) {
-    return Response.json({ error });
+    return Response.json({ 
+      success: false,
+      message: 'Something went wrong while sending',
+     });
   }
 }

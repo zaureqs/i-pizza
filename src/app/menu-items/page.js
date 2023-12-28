@@ -17,8 +17,8 @@ export default function MenuItemsPage() {
 
   useEffect(() => {
     fetch("/api/menu-items").then((res) => {
-      res.json().then((menuItems) => {
-        setMenuItems(menuItems.data);
+      res.json().then((json) => {
+        setMenuItems(json.data);
       });
     });
   }, []);

@@ -15,13 +15,7 @@ export default function EditableImage({link, setLink}) {
       }).then(response => {
         if (response.ok) {
           return response.json().then(data => {
-            console.log(data.link);
             setLink(data.link);
-          })
-        }
-        else {
-          return response.json().then(data => {
-            console.log(data.json().error);
           })
         }
         throw new Error('Something went wrong');
