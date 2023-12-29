@@ -65,6 +65,7 @@ export default function Profile() {
 
   const handleProfileInfoUpdate = async (e, data) => {
     e.preventDefault();
+    console.log(data);
 
     const savingPromise = new Promise(async (resolve, reject) => {
       try {

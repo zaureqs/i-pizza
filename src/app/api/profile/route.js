@@ -13,9 +13,8 @@ export async function PUT(req) {
   const userInfo = await UserInfo.findOne({ email }).lean();
 
   const data = await req.json();
-  const { _id, name, ...userData } = data;
+  const { _id, name, image, ...userData } = data;
 
-  console.log('user data 1', userData);
 
   if (_id) {
     if (!userInfo.admin) {
@@ -24,14 +23,16 @@ export async function PUT(req) {
         message: "you are not admin",
       });
     }
-    const user = await User.findOneAndUpdate({ _id }, { name, image: userData.image }).lean();
+    const user = await User.findOneAndUpdate(
+      { _id },
+      { name, image: image }
+    ).lean();
     const email = user.email;
-    console.log('user data 2',userData);
     await UserInfo.updateOne({ email }, userData, { upsert: true });
     return Response.json(true);
   }
 
-  await User.updateOne({ email }, { name });
+  await User.updateOne({ email }, { name, image });
 
   await UserInfo.updateOne({ email }, userData, { upsert: true });
 
